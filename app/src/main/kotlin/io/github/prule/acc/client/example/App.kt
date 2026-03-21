@@ -8,6 +8,8 @@ import io.github.prule.acc.client.LoggingListener
 import io.github.prule.acc.client.simulator.AccSimulator
 import io.github.prule.acc.client.simulator.AccSimulatorConfiguration
 import io.github.prule.acc.client.simulator.ClasspathSource
+import io.github.prule.acc.client.simulator.FileSource
+import io.github.prule.acc.client.simulator.Source
 import io.github.prule.acc.messages.AccBroadcastingInbound
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -26,8 +28,18 @@ fun main(args: Array<String>) =
     runBlocking {
         if (args.contains("--simulator")) {
             println("Starting ACC Simulator...")
+            val eventsArg = args.find { it.startsWith("--events=") }
+            val source: Source = if (eventsArg != null) {
+                val path = eventsArg.substringAfter("=")
+                println("Using custom events file: $path")
+                FileSource(path)
+            } else {
+                println("Using default classpath events file.")
+                ClasspathSource("io/github/prule/acc/client/simulator/playback-events.csv")
+            }
+
             launch(Dispatchers.IO) {
-                runAccSimulator()
+                runAccSimulator(source)
             }
             // Give the simulator a moment to start up before the client tries to connect
             delay(1000)
@@ -37,12 +49,12 @@ fun main(args: Array<String>) =
         runAccClientExample()
     }
 
-private fun runAccSimulator() {
+private fun runAccSimulator(source: Source) {
     AccSimulator(
         AccSimulatorConfiguration(
             port = 9000,
             connectionPassword = "asd",
-            playbackEventsFile = ClasspathSource("io/github/prule/acc/client/simulator/playback-events.csv"),
+            playbackEventsFile = source,
         ),
     ).start()
 }

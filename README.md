@@ -136,19 +136,38 @@ A simulator can be programmatically started using
     ).start()
 ```
 
+## Alternative
+
+To run the simulator and the client from the one program - although logs from the simulator and the client will be mixed:
+
+```shell
+./gradlew app:run --args="--simulator --events=./playback-events.csv"
+```
+
 
 # Native image
 
+## Set up the JVM
+
 Install SDKMAN so you can manage JVMs.
+
+```shell
+sdk install java 25.0.2-graalce
+sdk use java 25.0.2-graalce
+```
+
+## Build a native image
 
 ```shell
 ./gradlew nativeBuild
 ```
 
+## Run the native image
+
 ```shell
 ./app/build/native/nativeCompile/acc-client-example
 ```
-or
+
 ```shell
-./app/build/native/nativeCompile/acc-client-example --simulator
+./app/build/native/nativeCompile/acc-client-example --simulator --events=./app/playback-events.csv
 ```
