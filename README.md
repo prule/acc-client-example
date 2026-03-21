@@ -135,3 +135,20 @@ A simulator can be programmatically started using
         ),
     ).start()
 ```
+
+
+# Native image
+
+Install SDKMAN so you can manage JVMs.
+
+```shell
+./gradlew nativeBuild
+```
+
+```shell
+./app/build/native/nativeCompile/acc-client-example
+```
+or
+```shell
+./app/build/native/nativeCompile/acc-client-example --simulator
+```
