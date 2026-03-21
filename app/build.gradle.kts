@@ -23,3 +23,15 @@ application {
     // (Note that Kotlin compiles `App.kt` to a class with FQN `com.example.app.AppKt`.)
     mainClass = "io.github.prule.acc.client.app.AppKt"
 }
+
+tasks.register<JavaExec>("runAccSimulator") {
+    group = "application"
+    mainClass.set("io.github.prule.acc.client.simulator.AccSimulatorKt")
+    classpath = sourceSets["main"].runtimeClasspath
+}
+
+tasks.register<JavaExec>("runSampleApp") {
+    group = "application"
+    mainClass.set("io.github.prule.acc.client.example.AppKt")
+    classpath = sourceSets["main"].runtimeClasspath
+}
