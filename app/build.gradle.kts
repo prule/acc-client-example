@@ -1,18 +1,10 @@
 plugins {
-    // Apply the shared build logic from a convention plugin.
-    // The shared code is located in `buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts`.
     id("buildsrc.convention.kotlin-jvm")
-
-    // Apply the Application plugin to add support for building an executable JVM application.
-    application
-
-    // GraalVM Native Image plugin
     id("org.graalvm.buildtools.native") version "0.11.1"
+    application
 }
 
 dependencies {
-    // Project "app" depends on project "utils". (Project paths are separated with ":", so ":utils" refers to the top-level "utils" project.)
-    // implementation("io.github.prule.acc.client:acc-client:1.0-SNAPSHOT")
     implementation("com.github.prule:acc-client:main-SNAPSHOT")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 }
@@ -33,6 +25,9 @@ graalvmNative {
             buildArgs.add("--verbose")
             // fallback = false means the build will fail if it can't be fully native (no JVM fallback)
             fallback.set(false)
+            
+            // Fix for Windows GitHub Actions: force temp directory to be on same drive as build
+            buildArgs.add("-H:TempDirectory=" + layout.buildDirectory.dir("native-temp").get().asFile.absolutePath)
         }
     }
 }
