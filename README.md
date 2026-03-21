@@ -1,6 +1,6 @@
 # acc-client-example
 
-> This library depends on https://github.com/prule/acc-client
+> This sample application depends on https://github.com/prule/acc-client
 
 To recieve messages from a running ACC installation, you need to check its configuration and make sure you use the same values in `AccClient`.
 You'll need to start a driving session in ACC eg be on the track/in the pit for messages to be sent.

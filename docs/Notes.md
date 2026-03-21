@@ -114,3 +114,7 @@ Build: It uses Java 25 and GraalVM to build the native executable.
 Release: It automatically creates a GitHub Release for that tag and uploads the executable (renamed to acc-client-example-macOS) as an asset.
 Now, whenever you release a new version, users can download the binary directly from the Releases page of your repository, and the URL will be permanent for that version (e.g., .../releases/download/v1.0.0/acc-client-example-macOS).
 
+----
+
+jitpack to release libraries
+
