@@ -13,11 +13,13 @@ plugins {
 repositories {
     mavenLocal()
     mavenCentral()
+    maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
     // Project "app" depends on project "utils". (Project paths are separated with ":", so ":utils" refers to the top-level "utils" project.)
-    implementation("io.github.prule.acc.client:acc-client:1.0-SNAPSHOT")
+    // implementation("io.github.prule.acc.client:acc-client:1.0-SNAPSHOT")
+    implementation("com.github.prule:acc-client:main-SNAPSHOT")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 }
 
