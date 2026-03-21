@@ -55,3 +55,30 @@ Pauls-MacBook-Air acc-client-example % native-image --version
 native-image 25.0.2 2026-01-20
 GraalVM Runtime Environment GraalVM CE 25.0.2+10.1 (build 25.0.2+10-jvmci-b01)
 Substrate VM GraalVM CE 25.0.2+10.1 (build 25.0.2+10, serial gc)
+
+----
+
+Other issues seemed to be resolved when I upgraded to gradle 9.4 (from 9.0) and JDK 25 (from 21) 
+
+- Execution failed for task ':app:nativeCompile'.
+> 'other' has different root
+
+
+- Produced artifacts:
+  /Users/runner/work/acc-client-example/acc-client-example/app/build/native/nativeCompile/svm_err_b_20260321T065838.183_pid14941.md (build_info)
+  ========================================================================================================================
+  Failed generating 'acc-client-example' after 2.5s.
+
+The build process encountered an unexpected error:
+
+> com.oracle.svm.core.util.VMError$HostedError: java.nio.file.NoSuchFileException: "/Users/runner/work/acc-client-example/acc-client-example/app/build/native-temp"/SVM-1189774245107620780
+
+Please inspect the generated error report at:
+/Users/runner/work/acc-client-example/acc-client-example/app/build/native/nativeCompile/svm_err_b_20260321T065838.183_pid14941.md
+- e: file:///Users/paulrule/IdeaProjects/acc-client-example/app/build.gradle.kts:47:5: Unresolved reference 'buildArgs'.
+
+
+----
+
+graalvm Apple could not verify is free of malware that may harm your Mac or compromise your privacy.
+
