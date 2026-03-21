@@ -13,7 +13,7 @@ import kotlinx.coroutines.runBlocking
  * Ensure you have the simulator running (or real ACC running) and change the AccClientConfiguration
  * to use the appropriate port, server IP, connectionPassword.
  *
- * For
+ * For information on setting up the simulator or ACC, see the acc-client [ReadMe.md](https://github.com/prule/acc-client/blob/main/ReadMe.md) file.
  */
 fun main() {
     runBlocking {
@@ -27,7 +27,9 @@ fun main() {
             ),
         ).connect(
             listOf(
+                // log everything
                 LoggingListener(),
+                // filter to only broadcast messages of type "lap completed" and print them
                 FilteredMessageListener(
                     AccBroadcastingInbound.BroadcastingEvent::class,
                     { message -> message.type() == AccBroadcastingInbound.BroadcastType.LAPCOMPLETED },
