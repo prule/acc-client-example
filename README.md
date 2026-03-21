@@ -159,7 +159,7 @@ sdk use java 25.0.2-graalce
 ## Build a native image
 
 ```shell
-./gradlew nativeBuild
+./gradlew nativeCompile
 ```
 
 ## Run the native image
