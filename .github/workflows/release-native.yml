@@ -1,0 +1,54 @@
+name: Release Native Executables
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 25
+      uses: actions/setup-java@v4
+      with:
+        java-version: '25'
+        distribution: 'graalvm'
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: 8.7
+
+    - name: Build with Gradle
+      run: ./gradlew nativeCompile
+      env:
+        # Needed for Windows/macOS temp dir issues
+        GRADLE_OPTS: -Djava.io.tmpdir=${{ runner.temp }}
+
+    - name: Prepare Release Asset
+      shell: bash
+      run: |
+        if [[ "${{ runner.os }}" == "Windows" ]]; then
+          ASSET_NAME="acc-client-example-windows.exe"
+          mv app/build/native/nativeCompile/acc-client-example.exe "app/build/native/nativeCompile/${ASSET_NAME}"
+        else
+          ASSET_NAME="acc-client-example-${{ runner.os }}"
+          mv app/build/native/nativeCompile/acc-client-example "app/build/native/nativeCompile/${ASSET_NAME}"
+        fi
+        echo "ASSET_PATH=app/build/native/nativeCompile/${ASSET_NAME}" >> $GITHUB_ENV
+
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: ${{ env.ASSET_PATH }}

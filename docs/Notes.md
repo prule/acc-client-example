@@ -82,3 +82,35 @@ Please inspect the generated error report at:
 
 graalvm Apple could not verify is free of malware that may harm your Mac or compromise your privacy.
 
+This error occurs because macOS Gatekeeper cannot verify the GraalVM signature, usually because it was downloaded outside the App Store. It is generally safe if downloaded from the official GraalVM site or GitHub. To open it, go to System Settings > Privacy & Security, scroll down, and click "Open Anyway".
+
+Steps to Resolve
+Try to open: Attempt to open the GraalVM binary/app to trigger the error.
+Open Settings: Click the Apple logo, then go to System Settings > Privacy & Security.
+Allow Access: Scroll down to the "Security" section. You will see a message about "java" or "GraalVM." Click "Open Anyway".
+Enter Credentials: Enter your administrator password and click "Open".
+
+Alternative Methods
+Context Menu: Right-click (or Control-click) the application file and select "Open".
+Terminal: To remove the quarantine attribute, use xattr -d com.apple.quarantine <path_to_graalvm>
+
+Note: Only bypass this warning if you have directly downloaded the software from official Oracle or authorized sources. 
+
+----
+
+https://docs.gradle.org/current/userguide/best_practices_dependencies.html
+
+----
+
+the .github/workflows/release-native.yml workflow for you .
+Here's how it works:
+1.
+Trigger: It runs whenever you push a tag that starts with v (e.g., git tag v1.0.0 and git push --tags).
+2.
+Platform: Currently set to build on macos-latest (just like your build-native.yml), but you can add windows-latest or ubuntu-latest to the matrix if you want multi-platform releases.
+3.
+Build: It uses Java 25 and GraalVM to build the native executable.
+4.
+Release: It automatically creates a GitHub Release for that tag and uploads the executable (renamed to acc-client-example-macOS) as an asset.
+Now, whenever you release a new version, users can download the binary directly from the Releases page of your repository, and the URL will be permanent for that version (e.g., .../releases/download/v1.0.0/acc-client-example-macOS).
+
