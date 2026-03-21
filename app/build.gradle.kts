@@ -5,6 +5,9 @@ plugins {
 
     // Apply the Application plugin to add support for building an executable JVM application.
     application
+
+    // GraalVM Native Image plugin
+    id("org.graalvm.buildtools.native") version "0.11.1"
 }
 
 repositories {
@@ -20,8 +23,22 @@ dependencies {
 
 application {
     // Define the Fully Qualified Name for the application main class
-    // (Note that Kotlin compiles `App.kt` to a class with FQN `com.example.app.AppKt`.)
-    mainClass = "io.github.prule.acc.client.app.AppKt"
+    mainClass.set("io.github.prule.acc.client.example.AppKt")
+}
+
+graalvmNative {
+    binaries {
+        named("main") {
+            // Main options
+            imageName.set("acc-client-example")
+            mainClass.set("io.github.prule.acc.client.example.AppKt")
+
+            // Advanced options
+            buildArgs.add("--verbose")
+            // fallback = false means the build will fail if it can't be fully native (no JVM fallback)
+            fallback.set(false)
+        }
+    }
 }
 
 tasks.register<JavaExec>("runAccSimulator") {
