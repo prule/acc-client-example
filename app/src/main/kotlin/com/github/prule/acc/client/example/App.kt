@@ -1,20 +1,21 @@
-package io.github.prule.acc.client.example
+package com.github.prule.acc.client.example
 
-import io.github.prule.acc.client.AccClient
-import io.github.prule.acc.client.AccClientConfiguration
-import io.github.prule.acc.client.CsvWriterListener
-import io.github.prule.acc.client.FilteredMessageListener
-import io.github.prule.acc.client.JsonFormatter
-import io.github.prule.acc.client.LoggingListener
-import io.github.prule.acc.client.MessageListener
-import io.github.prule.acc.client.MessageSender
-import io.github.prule.acc.client.RegistrationResultListener
-import io.github.prule.acc.client.simulator.AccSimulator
-import io.github.prule.acc.client.simulator.AccSimulatorConfiguration
-import io.github.prule.acc.client.simulator.ClasspathSource
-import io.github.prule.acc.client.simulator.FileSource
-import io.github.prule.acc.client.simulator.Source
-import io.github.prule.acc.messages.AccBroadcastingInbound
+import com.github.prule.acc.client.AccClient
+import com.github.prule.acc.client.AccClientConfiguration
+import com.github.prule.acc.client.ClientState
+import com.github.prule.acc.client.CsvWriterListener
+import com.github.prule.acc.client.FilteredMessageListener
+import com.github.prule.acc.client.JsonFormatter
+import com.github.prule.acc.client.LoggingListener
+import com.github.prule.acc.client.MessageListener
+import com.github.prule.acc.client.MessageSender
+import com.github.prule.acc.client.RegistrationResultListener
+import com.github.prule.acc.client.simulator.AccSimulator
+import com.github.prule.acc.client.simulator.AccSimulatorConfiguration
+import com.github.prule.acc.client.simulator.ClasspathSource
+import com.github.prule.acc.client.simulator.FileSource
+import com.github.prule.acc.client.simulator.Source
+import com.github.prule.acc.messages.AccBroadcastingInbound
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -67,12 +68,13 @@ private fun runAccSimulator(source: Source) {
 }
 
 private suspend fun runAccClientExample(record: Boolean) {
+  val clientState = ClientState()
   AccClient(
           AccClientConfiguration(
               name = "Example",
               port = 9000,
-              //            serverIp = "127.0.0.1",
-              serverIp = "192.168.86.50",
+              serverIp = "127.0.0.1",
+              // serverIp = "192.168.86.50",
               updateMillis = 1000,
               connectionPassword = "asd",
           ),
@@ -81,7 +83,7 @@ private suspend fun runAccClientExample(record: Boolean) {
           listOfNotNull(
               // log everything
               LoggingListener(),
-              RegistrationResultListener(),
+              RegistrationResultListener(clientState),
               if (record)
                   CsvWriterListener(
                       Path.of("./recordings"),
