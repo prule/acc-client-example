@@ -43,7 +43,7 @@ fun main(args: Array<String>) = runBlocking {
           FileSource(path)
         } else {
           println("Using default classpath events file.")
-          ClasspathSource("io/github/prule/acc/client/simulator/playback-events.csv")
+          ClasspathSource("com/github/prule/acc/client/simulator/playback-events.csv")
         }
 
     launch(Dispatchers.IO) { runAccSimulator(source) }

@@ -128,12 +128,12 @@ A simulator can be programmatically started using
 
 ```kotlin
     AccSimulator(
-        AccSimulatorConfiguration(
-            port = 9000,
-            connectionPassword = "asd",
-            playbackEventsFile = ClasspathSource("io/github/prule/acc/client/simulator/playback-events.csv"),
-        ),
-    ).start()
+    AccSimulatorConfiguration(
+        port = 9000,
+        connectionPassword = "asd",
+        playbackEventsFile = ClasspathSource("com/github/prule/acc/client/simulator/playback-events.csv"),
+    ),
+).start()
 ```
 
 ## Alternative
