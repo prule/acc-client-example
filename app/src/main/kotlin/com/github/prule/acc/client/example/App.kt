@@ -74,7 +74,6 @@ private suspend fun runAccClientExample(record: Boolean) {
               name = "Example",
               port = 9000,
               serverIp = "127.0.0.1",
-              // serverIp = "192.168.86.50",
               updateMillis = 1000,
               connectionPassword = "asd",
           ),

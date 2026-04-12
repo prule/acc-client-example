@@ -59,6 +59,13 @@ tasks.register<JavaExec>("runAccSimulator") {
   classpath = sourceSets["main"].runtimeClasspath
 }
 
+tasks.register<JavaExec>("runAccSimulator-race") {
+  group = "application"
+  mainClass.set("com.github.prule.acc.client.simulator.AccSimulatorKt")
+  args = listOf("./recordings/race-10min-autodrome-enzo-e-dino-ferrari-ferrari296gt3.csv")
+  classpath = sourceSets["main"].runtimeClasspath
+}
+
 tasks.register<JavaExec>("runSampleApp") {
   group = "application"
   mainClass.set("com.github.prule.acc.client.example.AppKt")
