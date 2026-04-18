@@ -1,4 +1,4 @@
-package com.github.prule.acc.client.example
+package com.github.prule.acc.example
 
 import com.github.prule.acc.client.AccClient
 import com.github.prule.acc.client.AccClientConfiguration

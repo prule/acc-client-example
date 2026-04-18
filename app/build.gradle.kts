@@ -11,11 +11,18 @@ dependencies {
   implementation("ch.qos.logback:logback-classic:1.5.32")
   implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.15.2")
   implementation("io.github.xn32:json5k:0.3.0")
+
+  testImplementation(platform("org.junit:junit-bom:5.11.4"))
+  testImplementation("org.junit.jupiter:junit-jupiter")
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+  testImplementation("org.assertj:assertj-core:3.27.3")
+  testImplementation("io.mockk:mockk:1.13.16")
 }
 
 application {
   // Define the Fully Qualified Name for the application main class
-  mainClass.set("com.github.prule.acc.client.example.AppKt")
+  mainClass.set("com.github.prule.acc.example.AppKt")
 }
 
 graalvmNative {
@@ -23,7 +30,7 @@ graalvmNative {
     named("main") {
       // Main options
       imageName.set("acc-client-example")
-      mainClass.set("com.github.prule.acc.client.example.AppKt")
+      mainClass.set("com.github.prule.acc.example.AppKt")
 
       // Advanced options
       buildArgs.add("--verbose")
@@ -68,6 +75,6 @@ tasks.register<JavaExec>("runAccSimulator-race") {
 
 tasks.register<JavaExec>("runSampleApp") {
   group = "application"
-  mainClass.set("com.github.prule.acc.client.example.AppKt")
+  mainClass.set("com.github.prule.acc.example.AppKt")
   classpath = sourceSets["main"].runtimeClasspath
 }

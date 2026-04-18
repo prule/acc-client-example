@@ -1,4 +1,4 @@
-package com.github.prule.acc.client.example
+package com.github.prule.acc.example
 
 import com.github.doyaaaaaken.kotlincsv.client.CsvFileWriter
 import com.github.doyaaaaaken.kotlincsv.client.KotlinCsvExperimental
@@ -6,10 +6,10 @@ import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.github.prule.acc.client.MessageListener
 import com.github.prule.acc.client.MessageSender
 import com.github.prule.acc.messages.AccBroadcastingInbound
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.file.Path
 import java.time.LocalDateTime
-import org.slf4j.LoggerFactory
 
 @OptIn(KotlinCsvExperimental::class)
 class DetailCsvWriterListener(
