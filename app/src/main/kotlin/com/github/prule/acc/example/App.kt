@@ -21,6 +21,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.nio.file.Path
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * A sample "hello world" equivalent demonstrating how to use the acc-client library.
@@ -48,7 +49,7 @@ fun main(args: Array<String>) = runBlocking {
 
     launch(Dispatchers.IO) { runAccSimulator(source) }
     // Give the simulator a moment to start up before the client tries to connect
-    delay(1000)
+    delay(1000.milliseconds)
   }
 
   println("Starting ACC Client Example...")

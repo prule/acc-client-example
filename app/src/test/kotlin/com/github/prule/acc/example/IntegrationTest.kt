@@ -8,8 +8,6 @@ import com.github.prule.acc.client.simulator.AccSimulator
 import com.github.prule.acc.client.simulator.AccSimulatorConfiguration
 import com.github.prule.acc.client.simulator.ClasspathSource
 import com.github.prule.acc.messages.AccBroadcastingInbound
-import java.util.concurrent.atomic.AtomicBoolean
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,6 +16,9 @@ import kotlinx.coroutines.withTimeout
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
+import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 class IntegrationTest {
   private val logger = LoggerFactory.getLogger(javaClass)
@@ -46,7 +47,7 @@ class IntegrationTest {
           }
         }
 
-    delay(1000)
+    delay(1000.milliseconds)
 
     val client =
         AccClient(
@@ -84,20 +85,19 @@ class IntegrationTest {
     try {
       withTimeout(15.seconds) {
         while (!receivedMessage.get()) {
-          delay(100)
+          delay(100.milliseconds)
         }
       }
     } finally {
-        clientJob.cancel()
-        simulatorJob.cancel()
-        
-        try {
-            val socketField = simulator.javaClass.getDeclaredField("socket")
-            socketField.isAccessible = true
-            val socket = socketField.get(simulator) as? java.net.DatagramSocket
-            socket?.close()
-        } catch (e: Exception) {
-        }
+      clientJob.cancel()
+      simulatorJob.cancel()
+
+      try {
+        val socketField = simulator.javaClass.getDeclaredField("socket")
+        socketField.isAccessible = true
+        val socket = socketField.get(simulator) as? java.net.DatagramSocket
+        socket?.close()
+      } catch (_: Exception) {}
     }
 
     assertThat(receivedMessage.get()).isTrue
