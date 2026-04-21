@@ -18,7 +18,7 @@ dependencies {
   implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.15.2")
   implementation("io.github.xn32:json5k:0.3.0")
 
-  testImplementation(platform("org.junit:junit-bom:5.11.4"))
+  testImplementation(platform("org.junit:junit-bom:6.0.3"))
   testImplementation("org.junit.jupiter:junit-jupiter")
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
