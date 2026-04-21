@@ -23,7 +23,7 @@ dependencies {
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
   testImplementation("org.assertj:assertj-core:3.27.7")
-  testImplementation("io.mockk:mockk:1.13.16")
+  testImplementation("io.mockk:mockk:1.14.9")
 }
 
 application {
