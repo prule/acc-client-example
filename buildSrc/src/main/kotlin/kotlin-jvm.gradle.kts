@@ -15,10 +15,10 @@ configure<KotlinJvmProjectExtension> { jvmToolchain(21) }
 configure<JavaPluginExtension> { withSourcesJar() }
 
 val dokkaJar by
-    tasks.registering(Jar::class) {
-      archiveClassifier.set("javadoc")
-      from(tasks.named("dokkaGeneratePublicationHtml"))
-    }
+  tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+    from(tasks.named("dokkaGeneratePublicationHtml"))
+  }
 
 configure<PublishingExtension> {
   publications {
@@ -31,11 +31,5 @@ configure<PublishingExtension> {
 
 tasks.withType<Test>().configureEach {
   useJUnitPlatform()
-  testLogging {
-    events(
-        TestLogEvent.FAILED,
-        TestLogEvent.PASSED,
-        TestLogEvent.SKIPPED,
-    )
-  }
+  testLogging { events(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED) }
 }
