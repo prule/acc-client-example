@@ -6,15 +6,14 @@ import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.github.prule.acc.client.MessageListener
 import com.github.prule.acc.client.MessageSender
 import com.github.prule.acc.messages.AccBroadcastingInbound
-import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.file.Path
 import java.time.LocalDateTime
+import org.slf4j.LoggerFactory
 
 @OptIn(KotlinCsvExperimental::class)
-class DetailCsvWriterListener(
-    directory: Path?,
-) : MessageListener<AccBroadcastingInbound.RealtimeCarUpdate> {
+class DetailCsvWriterListener(directory: Path?) :
+  MessageListener<AccBroadcastingInbound.RealtimeCarUpdate> {
   private val logger = LoggerFactory.getLogger(javaClass)
   private lateinit var writer: CsvFileWriter
 
@@ -38,22 +37,22 @@ class DetailCsvWriterListener(
   private fun dateToFilename(): String = LocalDateTime.now().toString().replace(":", "-")
 
   override fun onMessage(
-      bytes: ByteArray,
-      message: AccBroadcastingInbound.RealtimeCarUpdate,
-      messageSender: MessageSender,
+    bytes: ByteArray,
+    message: AccBroadcastingInbound.RealtimeCarUpdate,
+    messageSender: MessageSender,
   ) {
     writer.writeRow(
-        listOf(
-            LocalDateTime.now(),
-            message.splinePosition(),
-            message.kmh(),
-            message.worldPosX(),
-            message.worldPosY(),
-            message.gear(),
-            message.delta(),
-            message.laps(),
-            message.carIndex(),
-        ),
+      listOf(
+        LocalDateTime.now(),
+        message.splinePosition(),
+        message.kmh(),
+        message.worldPosX(),
+        message.worldPosY(),
+        message.gear(),
+        message.delta(),
+        message.laps(),
+        message.carIndex(),
+      )
     )
   }
 }

@@ -4,12 +4,12 @@ import com.github.prule.acc.client.MessageSender
 import com.github.prule.acc.messages.AccBroadcastingInbound
 import io.mockk.every
 import io.mockk.mockk
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.name
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
 class DetailCsvWriterListenerTest {
 
@@ -32,16 +32,16 @@ class DetailCsvWriterListenerTest {
   fun `should write data row when message received`() {
     val listener = DetailCsvWriterListener(tempDir)
     val message =
-        mockk<AccBroadcastingInbound.RealtimeCarUpdate> {
-          every { splinePosition() } returns 0.5f
-          every { kmh() } returns 200
-          every { worldPosX() } returns 10.0f
-          every { worldPosY() } returns 20.0f
-          every { gear() } returns 4
-          every { delta() } returns 123
-          every { laps() } returns 10
-          every { carIndex() } returns 1
-        }
+      mockk<AccBroadcastingInbound.RealtimeCarUpdate> {
+        every { splinePosition() } returns 0.5f
+        every { kmh() } returns 200
+        every { worldPosX() } returns 10.0f
+        every { worldPosY() } returns 20.0f
+        every { gear() } returns 4
+        every { delta() } returns 123
+        every { laps() } returns 10
+        every { carIndex() } returns 1
+      }
     val sender = mockk<MessageSender>()
 
     listener.onMessage(byteArrayOf(), message, sender)

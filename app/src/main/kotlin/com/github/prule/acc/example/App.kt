@@ -16,12 +16,12 @@ import com.github.prule.acc.client.simulator.ClasspathSource
 import com.github.prule.acc.client.simulator.FileSource
 import com.github.prule.acc.client.simulator.Source
 import com.github.prule.acc.messages.AccBroadcastingInbound
+import java.nio.file.Path
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.nio.file.Path
-import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * A sample "hello world" equivalent demonstrating how to use the acc-client library.
@@ -38,14 +38,14 @@ fun main(args: Array<String>) = runBlocking {
     println("Starting ACC Simulator...")
     val eventsArg = args.find { it.startsWith("--events=") }
     val source: Source =
-        if (eventsArg != null) {
-          val path = eventsArg.substringAfter("=")
-          println("Using custom events file: $path")
-          FileSource(path)
-        } else {
-          println("Using default classpath events file.")
-          ClasspathSource("com/github/prule/acc/client/simulator/playback-events.csv")
-        }
+      if (eventsArg != null) {
+        val path = eventsArg.substringAfter("=")
+        println("Using custom events file: $path")
+        FileSource(path)
+      } else {
+        println("Using default classpath events file.")
+        ClasspathSource("com/github/prule/acc/client/simulator/playback-events.csv")
+      }
 
     launch(Dispatchers.IO) { runAccSimulator(source) }
     // Give the simulator a moment to start up before the client tries to connect
@@ -59,55 +59,49 @@ fun main(args: Array<String>) = runBlocking {
 
 private fun runAccSimulator(source: Source) {
   AccSimulator(
-          AccSimulatorConfiguration(
-              port = 9000,
-              connectionPassword = "asd",
-              playbackEventsFile = source,
-          ),
+      AccSimulatorConfiguration(
+        port = 9000,
+        connectionPassword = "asd",
+        playbackEventsFile = source,
       )
-      .start()
+    )
+    .start()
 }
 
 private suspend fun runAccClientExample(record: Boolean) {
   val clientState = ClientState()
   AccClient(
-          AccClientConfiguration(
-              name = "Example",
-              port = 9000,
-              serverIp = "127.0.0.1",
-              updateMillis = 1000,
-              connectionPassword = "asd",
+      AccClientConfiguration(
+        name = "Example",
+        port = 9000,
+        serverIp = "127.0.0.1",
+        updateMillis = 1000,
+        connectionPassword = "asd",
+      )
+    )
+    .connect(
+      listOfNotNull(
+        // log everything
+        LoggingListener(),
+        RegistrationResultListener(clientState),
+        if (record) CsvWriterListener(Path.of("./recordings")) else null,
+        // filter to only broadcast messages of type "lap completed" and print them
+        FilteredMessageListener(
+          AccBroadcastingInbound.BroadcastingEvent::class,
+          { message -> message.type() == AccBroadcastingInbound.BroadcastType.LAPCOMPLETED },
+          // listeners to apply to filtered messages
+          listOf(
+            object : MessageListener<AccBroadcastingInbound.BroadcastingEvent> {
+              override fun onMessage(
+                bytes: ByteArray,
+                message: AccBroadcastingInbound.BroadcastingEvent,
+                messageSender: MessageSender,
+              ) {
+                println("Lap completed ${JsonFormatter.toJsonString(message as Any)}")
+              }
+            }
           ),
+        ),
       )
-      .connect(
-          listOfNotNull(
-              // log everything
-              LoggingListener(),
-              RegistrationResultListener(clientState),
-              if (record)
-                  CsvWriterListener(
-                      Path.of("./recordings"),
-                  )
-              else null,
-              // filter to only broadcast messages of type "lap completed" and print them
-              FilteredMessageListener(
-                  AccBroadcastingInbound.BroadcastingEvent::class,
-                  { message ->
-                    message.type() == AccBroadcastingInbound.BroadcastType.LAPCOMPLETED
-                  },
-                  // listeners to apply to filtered messages
-                  listOf(
-                      object : MessageListener<AccBroadcastingInbound.BroadcastingEvent> {
-                        override fun onMessage(
-                            bytes: ByteArray,
-                            message: AccBroadcastingInbound.BroadcastingEvent,
-                            messageSender: MessageSender,
-                        ) {
-                          println("Lap completed ${JsonFormatter.toJsonString(message as Any)}")
-                        }
-                      },
-                  ),
-              ),
-          )
-      )
+    )
 }

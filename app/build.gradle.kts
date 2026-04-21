@@ -2,6 +2,12 @@ plugins {
   id("buildsrc.convention.kotlin-jvm")
   id("org.graalvm.buildtools.native") version "0.11.1"
   application
+  id("com.ncorti.ktfmt.gradle") version "0.26.0"
+}
+
+ktfmt {
+  // Google style - 2 space indentation & automatically adds/removes trailing commas
+  googleStyle()
 }
 
 dependencies {
@@ -39,7 +45,7 @@ graalvmNative {
 
       // Fix for Windows "different root" issue: use a temp dir inside the build folder
       buildArgs.add(
-          "-H:TempDirectory=" + layout.buildDirectory.dir("native-temp").get().asFile.absolutePath
+        "-H:TempDirectory=" + layout.buildDirectory.dir("native-temp").get().asFile.absolutePath
       )
     }
   }

@@ -170,3 +170,5 @@ sdk use java 25.0.2-graalce
 ```shell
 ./app/build/native/nativeCompile/acc-client-example --simulator --events=./app/playback-events.csv
 ```
+
+https://jitpack.io/#prule/acc-client-example
