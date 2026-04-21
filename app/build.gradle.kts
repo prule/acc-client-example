@@ -15,7 +15,7 @@ dependencies {
   implementation("com.github.prule:acc-messages:main-SNAPSHOT")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
   implementation("ch.qos.logback:logback-classic:1.5.32")
-  implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.15.2")
+  implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.10.0")
   implementation("io.github.xn32:json5k:0.3.0")
 
   testImplementation(platform("org.junit:junit-bom:5.11.4"))
